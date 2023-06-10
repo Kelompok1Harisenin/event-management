@@ -7,7 +7,6 @@ yarn.lock
 
 # Environment varibales
 .env*
-.env*.example
 
 # logs from logger
 logs
