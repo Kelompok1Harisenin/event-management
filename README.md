@@ -1,8 +1,8 @@
-# EVENT MANAGEMENT 📆
+# EVENT MANAGEMENT BACKEND 📆
 
 ## Features
 
-* _Express_ & MVC + Service pattern
+* _Express_ MVC + Service pattern
 
 
 ## Contents
