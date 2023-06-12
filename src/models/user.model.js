@@ -3,11 +3,6 @@ const bcrypt = require('bcrypt');
 
 // Define the User model
 const User = sequelize.define('User', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
   firsName: {
     type: DataTypes.STRING,
     allowNull: false,
