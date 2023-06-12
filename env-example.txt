@@ -2,8 +2,4 @@ HOST=localhost
 PORT=3000
 NODE_ENV=development
 
-MYSQL_HOST=
-MYSQL_PORT=
-MYSQL_NAME=
-MYSQL_USERNAME=
-MYSQL_PASSWORD=
+POSTGRES_URL=postgresql://<username>:<password>@<dbhost>:5432/dbname
