@@ -1,19 +1,22 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 // Define the User model
 const User = sequelize.define('User', {
   id: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
-    type: Sequelize.STRING,
+  firsName: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
+  lastName: {
+    type: DataTypes.STRING
+  },
   email: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
     validate: {
@@ -21,7 +24,7 @@ const User = sequelize.define('User', {
     },
   },
   password: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
     set(value) {
       // Hash the password using bcrypt before saving it
