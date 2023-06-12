@@ -38,3 +38,15 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
+
+// Event listener for process exit
+process.on('exit', () => {
+  logger.info('Process exited');
+});
+
+// Event listener for SIGINT signal
+process.on('SIGINT', () => {
+  // Perform cleanup actions or graceful shutdown
+  logger.info('Process terminated');
+  process.exit(0);
+});
