@@ -5,7 +5,7 @@ const sequelize = require('./database/database');
 let server;
 
 sequelize.authenticate().then(() => {
-  console.log(`Connected to mysql db ${config.mysql.name}`);
+  console.log(`Connected to postgre db ${config.postgres.url}`);
   server = app.listen(config.port, () => {
     console.log(`Listening to port ${config.port}`);
   });
@@ -33,7 +33,7 @@ process.on('uncaughtException', unexpectedErrorHandler);
 process.on('unhandledRejection', unexpectedErrorHandler);
 
 process.on('SIGTERM', () => {
-  logger.info('SIGTERM received');
+  console.log('SIGTERM received');
   if (server) {
     server.close();
   }
@@ -41,12 +41,12 @@ process.on('SIGTERM', () => {
 
 // Event listener for process exit
 process.on('exit', () => {
-  logger.info('Process exited');
+  console.log('Process exited');
 });
 
 // Event listener for SIGINT signal
 process.on('SIGINT', () => {
   // Perform cleanup actions or graceful shutdown
-  logger.info('Process terminated');
+  console.log('Process terminated');
   process.exit(0);
 });
