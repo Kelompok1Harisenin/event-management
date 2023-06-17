@@ -25,6 +25,8 @@ const Token = sequelize.define('token', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+}, {
+  timestamps: true,
 });
 
 // Define one-to-one relationships
