@@ -1,14 +1,13 @@
 const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 const bcrypt = require('bcrypt');
+const Role = require('./role.model');
 
 // Define the User model
-const User = sequelize.define('User', {
-  firsName: {
+const User = sequelize.define('user', {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  lastName: {
-    type: DataTypes.STRING
   },
   email: {
     type: DataTypes.STRING,
@@ -30,5 +29,7 @@ const User = sequelize.define('User', {
 }, {
   timestamps: true,
 });
+
+// User.belongsToMany(Role, { through: 'UserRole' });
 
 module.exports = User;

@@ -1,6 +1,6 @@
 const app = require('./app');
 const config = require('./config/config');
-const sequelize = require('./database/database');
+const sequelize = require('./config/database');
 
 let server;
 
