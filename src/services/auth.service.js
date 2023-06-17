@@ -1,6 +1,9 @@
+const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const sequelize = require('../config/database');
 const { User } = require('../models');
+const ApiError = require('../utils/ApiError');
+const messages = require('../utils/constants/messages');
 
 /**
  * Register
@@ -12,7 +15,7 @@ const register = async (data) => {
   // Check if the email is already taken
   const isEmailTaken = await User.findOne({ where: { email } });
   if (isEmailTaken) {
-    throw new Error('Email is already taken');
+    throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_TAKEN);
   }
 
   try {
@@ -28,7 +31,7 @@ const register = async (data) => {
     return newUser;
   } catch (error) {
     // Handle any errors during user creation
-    throw new Error(error.message);
+    throw new ApiError(httpStatus.CONFLICT, error.message);
   }
 };
 
