@@ -1,7 +1,10 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const { tokenTypes } = require('../config/token');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+const tokenTypes = require('../config/token');
+const User = require('./user.model')
 
-const Token = sequelize.define('Token', {
+// Define the Token model
+const Token = sequelize.define('token', {
   token: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -22,9 +25,11 @@ const Token = sequelize.define('Token', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+}, {
+  timestamps: true,
 });
 
-// Define relationships
+// Define one-to-one relationships
 Token.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = Token;

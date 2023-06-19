@@ -1,5 +1,19 @@
+# Server
 HOST=localhost
 PORT=3000
 NODE_ENV=development
 
+# Database
 POSTGRES_URL=postgresql://<username>:<password>@<dbhost>:5432/dbname
+
+# JWT
+# JWT secret key
+JWT_SECRET=e83adecdb154cc988f2f021c2877ed3d38a7bff17cf988ce4347a7ea1359badf
+# Number of days after which an access token expires
+JWT_ACCESS_EXPIRATION_DAYS=3
+# Number of days after which a refresh token expires
+JWT_REFRESH_EXPIRATION_DAYS=30
+# Number of minutes after which a reset password token expires
+JWT_RESET_PASSWORD_EXPIRATION_MINUTES=10
+# Number of minutes after which a verify email token expires
+JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=10
