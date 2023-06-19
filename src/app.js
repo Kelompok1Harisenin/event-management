@@ -4,8 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
-const ApiError = require('./utils/ApiError');
-const messages = require('./utils/constants/messages');
+const { messages, ApiError } = require('./utils');
 
 const app = express();
 
