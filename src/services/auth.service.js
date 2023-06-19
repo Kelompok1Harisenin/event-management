@@ -1,10 +1,7 @@
 const httpStatus = require('http-status');
-const catchAsync = require('../utils/catchAsync');
 const sequelize = require('../config/database');
 const { User, Role, UserRoles } = require('../models');
-const ApiError = require('../utils/ApiError');
-const messages = require('../utils/constants/messages');
-const roles = require('../utils/constants/roles');
+const { messages, roles, ApiError } = require('../utils');
 
 /**
  * Register
