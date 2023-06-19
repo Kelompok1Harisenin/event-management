@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.options('*', cors());
 
+// Define the root endpoint
+app.get('/', (req, res) => {
+  res.send('Hey this is my API running 🥳');
+});
+
 // v1 API routes
 app.use('/api/v1', routes);
 
