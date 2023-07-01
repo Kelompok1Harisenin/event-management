@@ -8,7 +8,7 @@
     "test": "jest",
     "prepare": "husky install",
     "lint": "eslint **/*.js",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "eslint **/*.js --fix",
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js"
   },
@@ -24,7 +24,26 @@
       "pre-commit": "lint-staged"
     }
   },
-  "keywords": [],
+  "keywords": [
+    "node",
+    "node.js",
+    "boilerplate",
+    "generator",
+    "express",
+    "rest",
+    "api",
+    "postgre",
+    "sequelize",
+    "es6",
+    "es7",
+    "es8",
+    "es9",
+    "jest",
+    "passport",
+    "joi",
+    "eslint",
+    "prettier"
+  ],
   "author": "",
   "license": "ISC",
   "engines": {
