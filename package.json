@@ -47,7 +47,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": ">=14x"
+    "node": ">=14.0.0"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
