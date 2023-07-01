@@ -4,14 +4,17 @@ const sequelize = require('./config/database');
 
 let server;
 
-sequelize.sync().then(() => {
-  console.log(`Connected to postgre db ${config.postgres.url}`);
-  server = app.listen(config.port, () => {
-    console.log(`Listening to port ${config.port}`);
+sequelize
+  .sync()
+  .then(() => {
+    console.log(`Connected to postgre db ${config.postgres.url}`);
+    server = app.listen(config.port, () => {
+      console.log(`Listening to port ${config.port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database: ', error);
   });
-}).catch((error) => {
-  console.error('Unable to connect to the database: ', error);
-});
 
 const exitHandler = () => {
   if (server) {
