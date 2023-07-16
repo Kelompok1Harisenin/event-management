@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
+const bcrypt = require('bcrypt');
 const sequelize = require('../config/database');
 const { User, Role, UserRoles } = require('../models');
+const { tokenService } = require('../services');
+const { userRepository, tokenRepository } = require('../repositories');
 const { messages, roles, ApiError } = require('../utils');
 
 /**
@@ -11,7 +14,7 @@ const register = async (data) => {
   const { name, email, password } = data;
 
   // Check if the email is already taken
-  const isEmailTaken = await User.findOne({ where: { email } });
+  const isEmailTaken = await userRepository.findByEmail(email);
   if (isEmailTaken) {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_TAKEN);
   }
@@ -45,6 +48,40 @@ const register = async (data) => {
   }
 };
 
+/**
+ * Login
+ * @param {Object} data
+ */
+const login = async (data) => {
+  const { email, password } = data;
+
+  const user = await userRepository.findByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, messages.INCORRECT_CREDENTIALS);
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, messages.INCORRECT_CREDENTIALS);
+  }
+
+  return user;
+};
+
+/**
+ * Logout
+ * @param {string} refreshToken
+ */
+const logout = async (refreshToken) => {
+  const userRefreshToken = await tokenRepository.findRefreshToken(refreshToken);
+  if (!userRefreshToken) {
+    throw new ApiError(httpStatus.NOT_FOUND, messages.TOKEN_NOT_FOUND);
+  }
+  await userRefreshToken.destroy();
+};
+
 module.exports = {
   register,
+  login,
+  logout,
 };

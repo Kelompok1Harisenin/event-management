@@ -9,6 +9,21 @@ const register = {
   }),
 };
 
+const login = {
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+  }),
+};
+
+const logout = {
+  body: Joi.object().keys({
+    refreshToken: Joi.string(),
+  }),
+};
+
 module.exports = {
   register,
+  login,
+  logout,
 };
