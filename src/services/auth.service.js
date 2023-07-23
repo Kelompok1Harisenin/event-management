@@ -1,9 +1,7 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcrypt');
-const sequelize = require('../config/database');
-const { User, Role, UserRoles } = require('../models');
-const { tokenService } = require('../services');
-const { userRepository, tokenRepository } = require('../repositories');
+const { User, UserRoles } = require('../models');
+const { userRepository, tokenRepository, roleRepository } = require('../repositories');
 const { messages, roles, ApiError } = require('../utils');
 
 /**
@@ -29,7 +27,7 @@ const register = async (data) => {
     });
 
     // Assign `attendee` as default role to the user
-    const defaultRole = await Role.findOne({ where: { name: roles.ATTENDEE } });
+    const defaultRole = await roleRepository.findRole(roles.ATTENDEE);
     if (defaultRole) {
       // Create the association between the user and the `attendee` role
       await UserRoles.create({
@@ -57,7 +55,7 @@ const login = async (data) => {
 
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, messages.INCORRECT_CREDENTIALS);
+    throw new ApiError(httpStatus.UNAUTHORIZED, messages.USER_NOT_FOUND);
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
@@ -65,7 +63,10 @@ const login = async (data) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, messages.INCORRECT_CREDENTIALS);
   }
 
-  return user;
+  const result = { ...user.dataValues };
+  delete result.password;
+
+  return result;
 };
 
 /**
