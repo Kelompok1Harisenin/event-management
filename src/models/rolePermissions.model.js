@@ -1,27 +1,27 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const { User, Role } = require('.');
+const { Role, Permission } = require('.');
 
-// Define the UserRoles model
-const UserRoles = sequelize.define(
-  'user_roles',
+// Define the RolePermissions model
+const RolePermissions = sequelize.define(
+  'role_permissions',
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: 'id',
-      },
-    },
     roleId: {
       type: DataTypes.INTEGER,
       references: {
         model: Role,
+        key: 'id',
+      },
+    },
+    permissionId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Permission,
         key: 'id',
       },
     },
@@ -32,7 +32,7 @@ const UserRoles = sequelize.define(
 );
 
 // Define many-to-many relationships
-User.belongsToMany(Role, { through: 'user_roles' });
-Role.belongsToMany(User, { through: 'user_roles' });
+Permission.belongsToMany(Role, { through: 'role_permissions' });
+Role.belongsToMany(Permission, { through: 'role_permissions' });
 
-module.exports = UserRoles;
+module.exports = RolePermissions;
