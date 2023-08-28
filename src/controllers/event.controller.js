@@ -36,6 +36,44 @@ const geteventByTitle = catchAsync(async (req, res) => {
   }
 });
 
+const creatEvent = catchAsync(async (req, res) => {
+  const idUser = req.user.id;
+  const {
+    // organizerId,
+    participantId,
+    title,
+    description,
+    eventType,
+    eventMode,
+    ettendeQuota,
+    availableQuota,
+    img,
+    dateStart,
+    dateEnd,
+    location,
+    cost,
+  } = req.body;
+  const data = await event.create({
+    organizerId: idUser,
+    participantId,
+    title,
+    description,
+    eventType,
+    eventMode,
+    ettendeQuota,
+    availableQuota,
+    img,
+    dateStart,
+    dateEnd,
+    location,
+    cost,
+  });
+  return res.status(httpStatus.OK).send({
+    masssage: 'Event Was Created',
+    data,
+  });
+});
+
 const removeEvent = catchAsync(async (req, res) => {
   try {
     const { id, title } = req.body;
@@ -54,4 +92,4 @@ const removeEvent = catchAsync(async (req, res) => {
   }
 });
 
-module.exports = { getevent, geteventByTitle, removeEvent };
+module.exports = { getevent, geteventByTitle, removeEvent, creatEvent };

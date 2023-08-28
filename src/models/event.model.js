@@ -4,13 +4,13 @@ const sequelize = require('../config/database');
 const event = sequelize.define(
   'event',
   {
-    // organizerId: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
-    // participantId: {
-    //   type: DataTypes.INTEGER,
-    // },
+    organizerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    participantId: {
+      type: DataTypes.INTEGER,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,

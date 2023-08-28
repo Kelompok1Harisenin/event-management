@@ -1,5 +1,11 @@
 const express = require('express');
-const { getevent, geteventByTitle, removeEvent } = require('../../controllers/event.controller');
+const {
+  getevent,
+  geteventByTitle,
+  removeEvent,
+  creatEvent,
+} = require('../../controllers/event.controller');
+const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
@@ -7,7 +13,10 @@ const router = express.Router();
 router.get('/', getevent);
 router.get('/:title', geteventByTitle);
 
+// POST
+router.post('/createEvent', auth(), creatEvent);
+
 // DELETE
-router.delete('/remove', removeEvent);
+router.delete('/remove', auth(), removeEvent);
 
 module.exports = router;
