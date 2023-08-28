@@ -5,4 +5,5 @@ module.exports.Permission = require('./permission.model');
 module.exports.Ticket = require('./ticket.model');
 module.exports.Payment = require('./payment.model');
 module.exports.UserRoles = require('./userRoles.model');
+module.exports.Packages = require('./packages.model');
 module.exports.RolePermissions = require('./rolePermissions.model');
