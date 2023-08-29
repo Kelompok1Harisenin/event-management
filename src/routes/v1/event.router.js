@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const {
   getevent,
   geteventByTitle,
@@ -7,6 +8,9 @@ const {
 } = require('../../controllers/event.controller');
 const auth = require('../../middlewares/auth');
 
+const postDir = `${process.cwd()}/upload/post_picture`;
+const uploadPost = multer({ dest: postDir });
+
 const router = express.Router();
 
 // GET
@@ -14,7 +18,7 @@ router.get('/', getevent);
 router.get('/:title', geteventByTitle);
 
 // POST
-router.post('/createEvent', auth(), creatEvent);
+router.post('/createEvent', auth(), uploadPost.single('post_photo'), creatEvent);
 
 // DELETE
 router.delete('/remove', auth(), removeEvent);

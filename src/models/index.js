@@ -5,3 +5,5 @@ module.exports.event = require('./event.model');
 module.exports.UserRoles = require('./userRoles.model');
 module.exports.Permission = require('./permission.model');
 module.exports.RolePermissions = require('./rolePermissions.model');
+module.exports.Packages = require('./packages.model');
+module.exports.Organizers = require('./organizers.model');
