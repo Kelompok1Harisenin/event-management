@@ -5,6 +5,7 @@ const {
   geteventByTitle,
   removeEvent,
   creatEvent,
+  uploadImage,
 } = require('../../controllers/event.controller');
 const auth = require('../../middlewares/auth');
 
@@ -18,8 +19,10 @@ router.get('/', getevent);
 router.get('/:title', geteventByTitle);
 
 // POST
-router.post('/createEvent', auth(), uploadPost.single('post_photo'), creatEvent);
+router.post('/createEvent', auth(), creatEvent);
 
+// PUT
+router.put('/uploadImage', auth(), uploadPost.single('eventImage'), uploadImage);
 // DELETE
 router.delete('/remove', auth(), removeEvent);
 

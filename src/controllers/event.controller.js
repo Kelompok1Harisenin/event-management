@@ -1,3 +1,4 @@
+const fs = require('fs');
 const httpStatus = require('http-status');
 const { event, Organizers, Packages, User } = require('../models');
 // const {} = require('../services/event.service');
@@ -99,11 +100,6 @@ const removeEvent = catchAsync(async (req, res) => {
       where: { id: tryEvent.organizerId },
     });
 
-    // const organizeUser = await Organizers.findOne({
-    //   where: { userId: tryOrganize.userId },
-    // });
-    // console.log(tryOrganize.dataValues.userId);
-
     if (!(tryOrganize.dataValues.userId === idUser)) {
       return res.status(httpStatus.NO_CONTENT).send({
         masssage: "You're Not organizer",
@@ -132,4 +128,46 @@ const removeEvent = catchAsync(async (req, res) => {
   }
 });
 
-module.exports = { getevent, geteventByTitle, removeEvent, creatEvent };
+const uploadImage = catchAsync(async (req, res) => {
+  try {
+    const idUser = req.user.sub;
+    const imageEvent = req.file.filename;
+    const idEvent = req.body.payload;
+    const postDir = `${process.cwd()}/upload/post_picture`;
+    const tryEvent = await event.findOne({
+      where: { id: idEvent },
+    });
+    const tryOrganize = await Organizers.findOne({
+      where: { id: tryEvent.organizerId },
+    });
+    if (tryOrganize.dataValues.userId !== idUser) {
+      return res.status(httpStatus.NO_CONTENT).send({
+        masssage: "You're Not organizer",
+      });
+    }
+    const oldImage = await event.findOne({
+      where: { id: idEvent },
+    });
+    if (oldImage !== null) {
+      fs.unlinkSync(`${postDir}/${oldImage.img}`);
+    }
+    const data = await event.update(
+      {
+        img: imageEvent,
+      },
+      { where: { id: idEvent } }
+    );
+    return res.status(httpStatus.OK).send({
+      masssage: 'Image Succsed Upload',
+      data,
+      imageEvent,
+    });
+  } catch (error) {
+    return res.status(httpStatus.BAD_GATEWAY).send({
+      masssage: 'Failed post image',
+      error,
+    });
+  }
+});
+
+module.exports = { getevent, geteventByTitle, removeEvent, creatEvent, uploadImage };
