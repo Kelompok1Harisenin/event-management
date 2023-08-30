@@ -23,7 +23,7 @@
       "consistent-return": "off",
       "func-names": "off",
       "jest/expect-expect": "off",
-      "no-console": "error",
+      "no-console": "off",
       "no-underscore-dangle": "off",
       "no-unused-labels": "error",
       "no-unused-vars": "error",

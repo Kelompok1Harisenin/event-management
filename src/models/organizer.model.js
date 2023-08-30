@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const { Packages, User } = require('./index');
+const User = require('./user.model');
+const Package = require('./package.model');
 
-const Organizers = sequelize.define('organizers', {
+const Organizer = sequelize.define('organizer', {
   userId: {
     type: DataTypes.INTEGER,
     references: {
@@ -13,14 +14,13 @@ const Organizers = sequelize.define('organizers', {
   packageId: {
     type: DataTypes.INTEGER,
     references: {
-      model: Packages,
+      model: Package,
       key: 'id',
     },
   },
 });
 
-// One to one relationships
-Organizers.hasOne(User, { foreignKey: 'userId' });
-Organizers.hasOne(Packages, { foreignKey: 'packageId' });
+Organizer.belongsTo(User, { foreignKey: 'userId' });
+Organizer.belongsTo(Package, { foreignKey: 'packageId' });
 
-module.exports = Organizers;
+module.exports = Organizer;
