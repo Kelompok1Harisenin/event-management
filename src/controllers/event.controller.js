@@ -1,11 +1,11 @@
 const httpStatus = require('http-status');
-const { event, Organizers, Packages, User } = require('../models');
+const { Event, Organizer, Package, User } = require('../models');
 // const {} = require('../services/event.service');
 const { catchAsync } = require('../utils');
 
 const getevent = catchAsync(async (req, res) => {
   try {
-    const data = await event.findAll();
+    const data = await Event.findAll();
     return res.status(httpStatus.OK).send({
       masssage: 'Get Data',
       data,
@@ -21,7 +21,7 @@ const getevent = catchAsync(async (req, res) => {
 const geteventByTitle = catchAsync(async (req, res) => {
   try {
     const Eventtitle = req.params.title;
-    const data = await event.findOne({
+    const data = await Event.findOne({
       where: { title: Eventtitle },
     });
     return res.status(httpStatus.OK).send({
@@ -57,16 +57,16 @@ const creatEvent = catchAsync(async (req, res) => {
     where: { id: idUser },
   });
   // console.log(user.name);
-  const packageOrganize = await Packages.create({
+  const packageOrganize = await Package.create({
     name: user.name,
     maxEvents: 200,
     maxQuota: ettendeQuota,
   });
-  const organizer = await Organizers.create({
+  const organizer = await Organizer.create({
     userId: idUser,
     packageId: packageOrganize.id,
   });
-  const data = await event.create({
+  const data = await Event.create({
     organizerId: organizer.id,
     participantId,
     title,
@@ -92,14 +92,14 @@ const removeEvent = catchAsync(async (req, res) => {
   try {
     const idUser = req.user.sub;
     const { id } = req.body;
-    const tryEvent = await event.findOne({
+    const tryEvent = await Event.findOne({
       where: { id },
     });
-    const tryOrganize = await Organizers.findOne({
+    const tryOrganize = await Organizer.findOne({
       where: { id: tryEvent.organizerId },
     });
 
-    // const organizeUser = await Organizers.findOne({
+    // const organizeUser = await Organizer.findOne({
     //   where: { userId: tryOrganize.userId },
     // });
     // console.log(tryOrganize.dataValues.userId);
@@ -109,13 +109,13 @@ const removeEvent = catchAsync(async (req, res) => {
         masssage: "You're Not organizer",
       });
     }
-    const dataOrgenize = await Organizers.destroy({
+    const dataOrgenize = await Organizer.destroy({
       where: { id: tryEvent.organizerId },
     });
-    const dataPackage = await Packages.destroy({
+    const dataPackage = await Package.destroy({
       where: { id: tryOrganize.packageId },
     });
-    const dataEvent = await event.destroy({
+    const dataEvent = await Event.destroy({
       where: { id },
     });
     return res.status(httpStatus.OK).send({

@@ -1,9 +1,11 @@
 module.exports.Token = require('./token.model');
 module.exports.User = require('./user.model');
 module.exports.Role = require('./role.model');
-module.exports.event = require('./event.model');
+module.exports.Event = require('./event.model');
 module.exports.UserRoles = require('./userRoles.model');
 module.exports.Permission = require('./permission.model');
 module.exports.RolePermissions = require('./rolePermissions.model');
-module.exports.Packages = require('./packages.model');
-module.exports.Organizers = require('./organizers.model');
+module.exports.Package = require('./package.model');
+module.exports.Organizer = require('./organizer.model');
+module.exports.Ticket = require('./ticket.model');
+module.exports.Payment = require('./payment.model');

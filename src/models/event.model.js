@@ -1,15 +1,18 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const Organizer = require('./organizer.model');
+const Ticket = require('./ticket.model');
 
-const event = sequelize.define(
+// Define the Event model
+const Event = sequelize.define(
   'event',
   {
     organizerId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    participantId: {
-      type: DataTypes.INTEGER,
+      references: {
+        model: Organizer,
+        key: 'id',
+      },
     },
     title: {
       type: DataTypes.STRING,
@@ -21,10 +24,7 @@ const event = sequelize.define(
     eventType: {
       type: DataTypes.STRING,
     },
-    eventMode: {
-      type: DataTypes.STRING,
-    },
-    ettendeQuota: {
+    attendeeQuota: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -32,14 +32,14 @@ const event = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    img: {
+    image: {
       type: DataTypes.STRING,
     },
-    dateStart: {
+    startDate: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    dateEnd: {
+    endDate: {
       type: DataTypes.DATE,
       allowNull: false,
     },
@@ -47,7 +47,7 @@ const event = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    cost: {
+    price: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
@@ -57,4 +57,7 @@ const event = sequelize.define(
   }
 );
 
-module.exports = event;
+Event.belongsTo(Organizer, { foreignKey: 'organizerId' });
+Event.hasMany(Ticket, { foreignKey: 'eventId' });
+
+module.exports = Event;
