@@ -24,7 +24,7 @@ const event = sequelize.define(
     eventMode: {
       type: DataTypes.STRING,
     },
-    ettendeQuota: {
+    attendeQuota: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

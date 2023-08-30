@@ -4,7 +4,7 @@ const { event, Organizers, Packages, User } = require('../models');
 // const {} = require('../services/event.service');
 const { catchAsync } = require('../utils');
 
-const getevent = catchAsync(async (req, res) => {
+const getEvent = catchAsync(async (req, res) => {
   try {
     const data = await event.findAll();
     return res.status(httpStatus.OK).send({
@@ -19,11 +19,11 @@ const getevent = catchAsync(async (req, res) => {
   }
 });
 
-const geteventByTitle = catchAsync(async (req, res) => {
+const getEventById = catchAsync(async (req, res) => {
   try {
-    const Eventtitle = req.params.title;
+    const EventId = req.params.id;
     const data = await event.findOne({
-      where: { title: Eventtitle },
+      where: { id: EventId },
     });
     return res.status(httpStatus.OK).send({
       masssage: 'Get Data',
@@ -47,7 +47,7 @@ const creatEvent = catchAsync(async (req, res) => {
     description,
     eventType,
     eventMode,
-    ettendeQuota,
+    attendeQuota,
     availableQuota,
     dateStart,
     dateEnd,
@@ -61,7 +61,7 @@ const creatEvent = catchAsync(async (req, res) => {
   const packageOrganize = await Packages.create({
     name: user.name,
     maxEvents: 200,
-    maxQuota: ettendeQuota,
+    maxQuota: attendeQuota,
   });
   const organizer = await Organizers.create({
     userId: idUser,
@@ -74,7 +74,7 @@ const creatEvent = catchAsync(async (req, res) => {
     description,
     eventType,
     eventMode,
-    ettendeQuota,
+    attendeQuota,
     availableQuota,
     // img,
     dateStart,
@@ -170,4 +170,4 @@ const uploadImage = catchAsync(async (req, res) => {
   }
 });
 
-module.exports = { getevent, geteventByTitle, removeEvent, creatEvent, uploadImage };
+module.exports = { getEvent, getEventById, removeEvent, creatEvent, uploadImage };

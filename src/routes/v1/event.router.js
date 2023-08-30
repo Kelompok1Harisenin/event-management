@@ -1,8 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const {
-  getevent,
-  geteventByTitle,
+  getEvent,
+  getEventById,
   removeEvent,
   creatEvent,
   uploadImage,
@@ -15,8 +15,8 @@ const uploadPost = multer({ dest: postDir });
 const router = express.Router();
 
 // GET
-router.get('/', getevent);
-router.get('/:title', geteventByTitle);
+router.get('/', getEvent);
+router.get('/:title', getEventById);
 
 // POST
 router.post('/createEvent', auth(), creatEvent);
