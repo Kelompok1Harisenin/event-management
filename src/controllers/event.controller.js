@@ -1,12 +1,12 @@
 const fs = require('fs');
 const httpStatus = require('http-status');
-const { event, Organizers, Packages, User } = require('../models');
+const { Event, Organizer, Package, User } = require('../models');
 // const {} = require('../services/event.service');
 const { catchAsync } = require('../utils');
 
 const getEvent = catchAsync(async (req, res) => {
   try {
-    const data = await event.findAll();
+    const data = await Event.findAll();
     return res.status(httpStatus.OK).send({
       masssage: 'Get Data',
       data,
@@ -22,7 +22,7 @@ const getEvent = catchAsync(async (req, res) => {
 const getEventById = catchAsync(async (req, res) => {
   try {
     const EventId = req.params.id;
-    const data = await event.findOne({
+    const data = await Event.findOne({
       where: { id: EventId },
     });
     return res.status(httpStatus.OK).send({
@@ -46,41 +46,39 @@ const creatEvent = catchAsync(async (req, res) => {
     title,
     description,
     eventType,
-    eventMode,
-    attendeQuota,
+    attendeeQuota,
     availableQuota,
-    dateStart,
-    dateEnd,
+    startDate,
+    endDate,
     location,
-    cost,
+    price,
   } = req.body;
   const user = await User.findOne({
     where: { id: idUser },
   });
   // console.log(user.name);
-  const packageOrganize = await Packages.create({
+  const packageOrganize = await Package.create({
     name: user.name,
     maxEvents: 200,
-    maxQuota: attendeQuota,
+    maxQuota: attendeeQuota,
   });
-  const organizer = await Organizers.create({
+  const organizer = await Organizer.create({
     userId: idUser,
     packageId: packageOrganize.id,
   });
-  const data = await event.create({
+  const data = await Event.create({
     organizerId: organizer.id,
     participantId,
     title,
     description,
     eventType,
-    eventMode,
-    attendeQuota,
+    attendeeQuota,
     availableQuota,
     // img,
-    dateStart,
-    dateEnd,
+    startDate,
+    endDate,
     location,
-    cost,
+    price,
   });
   return res.status(httpStatus.OK).send({
     masssage: 'Event Was Created',
@@ -93,11 +91,11 @@ const removeEvent = catchAsync(async (req, res) => {
   try {
     const idUser = req.user.sub;
     const { id } = req.body;
-    const tryEvent = await event.findOne({
+    const tryEvent = await Event.findOne({
       where: { id },
     });
-    const tryOrganize = await Organizers.findOne({
-      where: { id: tryEvent.organizerId },
+    const tryOrganize = await Organizer.findOne({
+      where: { id: tryEvent.dataValues.organizerId },
     });
 
     if (!(tryOrganize.dataValues.userId === idUser)) {
@@ -105,14 +103,14 @@ const removeEvent = catchAsync(async (req, res) => {
         masssage: "You're Not organizer",
       });
     }
-    const dataOrgenize = await Organizers.destroy({
+    const dataEvent = await Event.destroy({
+      where: { id },
+    });
+    const dataOrgenize = await Organizer.destroy({
       where: { id: tryEvent.organizerId },
     });
-    const dataPackage = await Packages.destroy({
+    const dataPackage = await Package.destroy({
       where: { id: tryOrganize.packageId },
-    });
-    const dataEvent = await event.destroy({
-      where: { id },
     });
     return res.status(httpStatus.OK).send({
       masssage: 'Event has Been deleted',
@@ -134,10 +132,10 @@ const uploadImage = catchAsync(async (req, res) => {
     const imageEvent = req.file.filename;
     const idEvent = req.body.payload;
     const postDir = `${process.cwd()}/upload/post_picture`;
-    const tryEvent = await event.findOne({
+    const tryEvent = await Event.findOne({
       where: { id: idEvent },
     });
-    const tryOrganize = await Organizers.findOne({
+    const tryOrganize = await Organizer.findOne({
       where: { id: tryEvent.organizerId },
     });
     if (tryOrganize.dataValues.userId !== idUser) {
@@ -145,13 +143,13 @@ const uploadImage = catchAsync(async (req, res) => {
         masssage: "You're Not organizer",
       });
     }
-    const oldImage = await event.findOne({
+    const oldImage = await Event.findOne({
       where: { id: idEvent },
     });
-    if (oldImage !== null) {
+    if (oldImage.image !== null) {
       fs.unlinkSync(`${postDir}/${oldImage.img}`);
     }
-    const data = await event.update(
+    const data = await Event.update(
       {
         img: imageEvent,
       },
@@ -170,4 +168,57 @@ const uploadImage = catchAsync(async (req, res) => {
   }
 });
 
-module.exports = { getEvent, getEventById, removeEvent, creatEvent, uploadImage };
+const updateEvent = catchAsync(async (req, res) => {
+  try {
+    const idUser = req.user.sub;
+    const {
+      id,
+      participantId,
+      title,
+      description,
+      eventType,
+      attendeeQuota,
+      availableQuota,
+      startDate,
+      endDate,
+      location,
+      price,
+    } = req.body;
+    const tryEvent = await Event.findOne({
+      where: { id },
+    });
+    const tryOrganize = await Organizer.findOne({
+      where: { id: tryEvent.dataValues.organizerId },
+    });
+    console.log(idUser, tryOrganize.dataValues.userId === idUser);
+    if (tryOrganize.dataValues.userId !== idUser) {
+      return res.status(httpStatus.NO_CONTENT).send({
+        masssage: "You're Not organizer",
+      });
+    }
+    const data = await Event.update(
+      {
+        participantId,
+        title,
+        description,
+        eventType,
+        attendeeQuota,
+        availableQuota,
+        startDate,
+        endDate,
+        location,
+        price,
+      },
+      { where: { id } }
+    );
+    return res.status(httpStatus.OK).send({
+      masssage: 'Update data was successfully',
+      data,
+    });
+  } catch (error) {
+    return res.status(httpStatus.BAD_GATEWAY).send({
+      error,
+    });
+  }
+});
+module.exports = { getEvent, getEventById, removeEvent, creatEvent, uploadImage, updateEvent };

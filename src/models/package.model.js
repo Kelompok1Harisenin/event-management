@@ -1,10 +1,14 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Packages = sequelize.define('packages', {
+// Define the Package model
+const Package = sequelize.define('package', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT,
   },
   maxEvents: {
     type: DataTypes.INTEGER,
@@ -16,4 +20,4 @@ const Packages = sequelize.define('packages', {
   },
 });
 
-module.exports = Packages;
+module.exports = Package;

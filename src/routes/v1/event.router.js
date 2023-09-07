@@ -6,6 +6,7 @@ const {
   removeEvent,
   creatEvent,
   uploadImage,
+  updateEvent,
 } = require('../../controllers/event.controller');
 const auth = require('../../middlewares/auth');
 
@@ -16,13 +17,15 @@ const router = express.Router();
 
 // GET
 router.get('/', getEvent);
-router.get('/:title', getEventById);
+router.get('/:id', getEventById);
 
 // POST
 router.post('/createEvent', auth(), creatEvent);
 
 // PUT
 router.put('/uploadImage', auth(), uploadPost.single('eventImage'), uploadImage);
+router.put('/updateEvent', auth(), updateEvent);
+
 // DELETE
 router.delete('/remove', auth(), removeEvent);
 

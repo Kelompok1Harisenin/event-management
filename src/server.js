@@ -5,7 +5,7 @@ const sequelize = require('./config/database');
 let server;
 
 sequelize
-  .sync()
+  .authenticate()
   .then(() => {
     console.log(`Connected to postgre db ${config.postgres.url}`);
     server = app.listen(config.port, () => {

@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const { Ticket } = require('.');
+const Ticket = require('./ticket.model');
 
 // Define the Payment model
 const Payment = sequelize.define(
