@@ -7,5 +7,6 @@ module.exports.Permission = require('./permission.model');
 module.exports.RolePermissions = require('./rolePermissions.model');
 module.exports.Package = require('./package.model');
 module.exports.Organizer = require('./organizer.model');
+module.exports.Attendee = require('./attendee.model');
 module.exports.Ticket = require('./ticket.model');
 module.exports.Payment = require('./payment.model');

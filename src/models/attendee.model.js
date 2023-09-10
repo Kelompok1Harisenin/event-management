@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const { User } = require('./index');
 
-const Atendee = sequelize.define('atendee', {
+const Attendee = sequelize.define('attendee', {
   userId: {
     type: DataTypes.INTEGER,
     references: {
@@ -13,6 +13,6 @@ const Atendee = sequelize.define('atendee', {
 });
 
 // one to one relation
-Atendee.hasOne(User, { foreignKey: 'userId' });
+Attendee.belongsTo(User, { foreignKey: 'userId' });
 
-module.exports = Atendee;
+module.exports = Attendee;
