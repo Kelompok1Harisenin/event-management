@@ -1,20 +1,5 @@
-// // const httpStatus = require('http-status');
-// // const { event } = require('../models');
-// // const { catchAsync } = require('../utils');
+// const httpStatus = require('http-status');
 
-// const geteventService = async (eventData) => {
-//   try {
-//     const data = await eventData.findAll();
-//     return {
-//       masssage: 'good',
-//       data,
-//     };
-//   } catch (error) {
-//     return {
-//       masssage: 'Nothing data found',
-//       data: error,
-//     };
-//   }
-// };
+// const createEvent = async (data) => {
 
-// module.exports = { geteventService };
+// }

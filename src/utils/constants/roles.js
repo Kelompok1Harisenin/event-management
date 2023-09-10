@@ -1,8 +1,8 @@
 // Constant Roles
 const roles = {
-  ADMIN: 'admin',
-  ATTENDEE: 'attendee',
-  ORGANIZER: 'organizer',
+  ADMIN: 'Admin',
+  ATTENDEE: 'Attendee',
+  ORGANIZER: 'Organizer',
 };
 
 module.exports = roles;
