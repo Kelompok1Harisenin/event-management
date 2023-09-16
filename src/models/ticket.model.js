@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Event = require('./event.model');
+const Attendee = require('./attendee.model');
 
 // Define the Ticket model
 const Ticket = sequelize.define(
@@ -17,9 +18,12 @@ const Ticket = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    attendeesId: {
+    attendeeId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      references: {
+        model: Attendee,
+        key: 'id',
+      },
     },
     emailSent: {
       type: DataTypes.BOOLEAN,
@@ -30,5 +34,7 @@ const Ticket = sequelize.define(
     timestamps: true,
   }
 );
+
+Ticket.belongsTo(Attendee, { foreignKey: 'attendeeId' });
 
 module.exports = Ticket;
