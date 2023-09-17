@@ -64,15 +64,25 @@ const getEvents = async (filter = null) => {
 };
 
 const getEventById = async (id) => {
-  const event = await eventRepository.findById(id);
+  const event = await eventRepository.findById(Event, id);
   if (!event) {
     throw new ApiError(httpStatus.NOT_FOUND, messages.RECORD_NOT_FOUND);
   }
   return event;
 };
 
+const removeEvent = async (id) => {
+  const event = await eventRepository.findById(Event, id);
+  if (!event) {
+    throw new ApiError(httpStatus.NOT_FOUND, messages.RECORD_NOT_FOUND);
+  }
+  await eventRepository.deleteById(Event, id);
+  return {};
+};
+
 module.exports = {
   createEvent,
   getEvents,
   getEventById,
+  removeEvent,
 };

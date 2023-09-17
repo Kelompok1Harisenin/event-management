@@ -38,8 +38,15 @@ const getEventById = {
   }),
 };
 
+const removeEvent = {
+  params: Joi.object().keys({
+    id: Joi.number().integer().required(),
+  }),
+};
+
 module.exports = {
   createEvent,
   getEvents,
   getEventById,
+  removeEvent,
 };
