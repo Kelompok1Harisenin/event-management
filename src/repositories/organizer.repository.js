@@ -1,9 +1,9 @@
 const { Organizer } = require('../models');
 
-const findByPk = (organizerId) => {
+const findById = (organizerId) => {
   return Organizer.findByPk(organizerId);
 };
 
 module.exports = {
-  findByPk,
+  findById,
 };

@@ -5,17 +5,10 @@ const { eventValidation } = require('../../validations');
 const { eventController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 
-// const postDir = `${process.cwd()}/upload`;
-// const uploadPost = multer({ dest: postDir });
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 const router = express.Router();
-
-// GET
-// router.get('/', getevent);
-// router.get('/:title', geteventByTitle);
 
 router.post(
   '/',
@@ -24,9 +17,8 @@ router.post(
   upload.single('image'),
   eventController.createEvent
 );
-// router.post('/', auth(), uploadPost.single('post_photo'), creatEvent);
-
-// DELETE
+router.get('/', validate(eventValidation.getEvents), eventController.getEvents);
+router.get('/:id', validate(eventValidation.getEventById), eventController.getEventById);
 // router.delete('/remove', auth(), removeEvent);
 
 module.exports = router;

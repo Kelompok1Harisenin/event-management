@@ -26,6 +26,20 @@ const createEvent = {
   }),
 };
 
+const getEvents = {
+  query: Joi.object().keys({
+    title: Joi.string(),
+  }),
+};
+
+const getEventById = {
+  params: Joi.object().keys({
+    id: Joi.number().integer().required(),
+  }),
+};
+
 module.exports = {
   createEvent,
+  getEvents,
+  getEventById,
 };

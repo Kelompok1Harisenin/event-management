@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
+const { Op } = require('sequelize');
 const { Event } = require('../models');
-const { organizerRepository } = require('../repositories');
+const { organizerRepository, eventRepository } = require('../repositories');
 const { ApiError, messages } = require('../utils');
 const config = require('../config/config');
 const supabase = require('../config/supabase');
@@ -46,7 +47,7 @@ const createEvent = async (data, imageFile) => {
   }
 
   const image = await uploadImage(imageFile, title);
-  const organizer = await organizerRepository.findByPk(organizerId);
+  const organizer = await organizerRepository.findById(organizerId);
   if (!organizer) {
     throw new ApiError(httpStatus.NOT_FOUND, messages.ORGANIZER_NOT_FOUND);
   }
@@ -68,6 +69,34 @@ const createEvent = async (data, imageFile) => {
   return createdEvent;
 };
 
+const getEvents = async (filter = null) => {
+  const { title } = filter;
+  let events;
+
+  if (title) {
+    events = await Event.findAll({
+      where: {
+        title: {
+          [Op.iLike]: `%${title}%`,
+        },
+      },
+    });
+  } else {
+    events = await Event.findAll();
+  }
+  return events;
+};
+
+const getEventById = async (id) => {
+  const event = await eventRepository.findById(id);
+  if (!event) {
+    throw new ApiError(httpStatus.NOT_FOUND, messages.RECORD_NOT_FOUND);
+  }
+  return event;
+};
+
 module.exports = {
   createEvent,
+  getEvents,
+  getEventById,
 };

@@ -3,42 +3,19 @@ const { Event, Organizer, Package } = require('../models');
 const { catchAsync } = require('../utils');
 const { eventService } = require('../services');
 
-const getevent = catchAsync(async (req, res) => {
-  try {
-    const data = await Event.findAll();
-    return res.status(httpStatus.OK).send({
-      masssage: 'Get Data',
-      data,
-    });
-  } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).send({
-      masssage: 'Nothing data found',
-      data: 'error',
-    });
-  }
-});
-
-const geteventByTitle = catchAsync(async (req, res) => {
-  try {
-    const Eventtitle = req.params.title;
-    const data = await Event.findOne({
-      where: { title: Eventtitle },
-    });
-    return res.status(httpStatus.OK).send({
-      masssage: 'Get Data',
-      data,
-    });
-  } catch (error) {
-    return res.status(httpStatus.BAD_REQUEST).send({
-      masssage: 'Nothing data found',
-      data: 'error',
-    });
-  }
-});
-
 const createEvent = catchAsync(async (req, res) => {
   const event = await eventService.createEvent(req.body, req.file);
   res.status(httpStatus.CREATED).send({ event });
+});
+
+const getEvents = catchAsync(async (req, res) => {
+  const events = await eventService.getEvents(req.query);
+  res.send(events);
+});
+
+const getEventById = catchAsync(async (req, res) => {
+  const event = await eventService.getEventById(req.params.id);
+  res.send(event);
 });
 
 const removeEvent = catchAsync(async (req, res) => {
@@ -85,4 +62,9 @@ const removeEvent = catchAsync(async (req, res) => {
   }
 });
 
-module.exports = { getevent, geteventByTitle, removeEvent, createEvent };
+module.exports = {
+  createEvent,
+  getEvents,
+  getEventById,
+  removeEvent,
+};
