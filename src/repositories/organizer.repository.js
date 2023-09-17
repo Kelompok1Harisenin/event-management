@@ -1,4 +1,5 @@
 const { Organizer } = require('../models');
+const baseRepository = require('./base.repository');
 
 const findById = (organizerId) => {
   return Organizer.findByPk(organizerId);
@@ -6,4 +7,5 @@ const findById = (organizerId) => {
 
 module.exports = {
   findById,
+  ...baseRepository,
 };

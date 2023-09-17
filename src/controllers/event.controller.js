@@ -4,7 +4,7 @@ const { eventService } = require('../services');
 
 const createEvent = catchAsync(async (req, res) => {
   const event = await eventService.createEvent(req.body, req.file);
-  res.status(httpStatus.CREATED).send({ event });
+  res.status(httpStatus.CREATED).send(event);
 });
 
 const getEvents = catchAsync(async (req, res) => {

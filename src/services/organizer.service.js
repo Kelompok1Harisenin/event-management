@@ -7,7 +7,7 @@ const createOrganizer = async (data) => {
   const { userId, packageId } = data;
 
   try {
-    const packageData = await packageRepository.findById(packageId);
+    const packageData = await packageRepository.findById(Organizer, packageId);
     const user = await userRepository.findById(userId);
     if (packageData && user) {
       await Organizer.create({
@@ -20,6 +20,13 @@ const createOrganizer = async (data) => {
   }
 };
 
+const getOrganizers = async () => {
+  const organizer = await Organizer.findAll();
+
+  return organizer;
+};
+
 module.exports = {
   createOrganizer,
+  getOrganizers,
 };

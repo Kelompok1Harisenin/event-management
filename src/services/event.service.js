@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
-const { Op } = require('sequelize');
-const { Event } = require('../models');
+const { Event, Organizer } = require('../models');
 const { organizerRepository, eventRepository } = require('../repositories');
 const { ApiError, messages, tags, uploadImage } = require('../utils');
 
@@ -23,7 +22,7 @@ const createEvent = async (data, imageFile) => {
   }
 
   const image = await uploadImage(imageFile, title, tags.EVENTS);
-  const organizer = await organizerRepository.findById(organizerId);
+  const organizer = await organizerRepository.findById(Organizer, organizerId);
   if (!organizer) {
     throw new ApiError(httpStatus.NOT_FOUND, messages.ORGANIZER_NOT_FOUND);
   }
@@ -46,29 +45,49 @@ const createEvent = async (data, imageFile) => {
 };
 
 const getEvents = async (filter = null) => {
-  const { title } = filter;
-  let events;
+  let events = await eventRepository.findAllByFilterWithUserAndPackage(filter);
 
-  if (title) {
-    events = await Event.findAll({
-      where: {
-        title: {
-          [Op.iLike]: `%${title}%`,
-        },
-      },
-    });
-  } else {
-    events = await Event.findAll();
-  }
+  events = events.map((event) => ({
+    ...event.toJSON(),
+    organizer: {
+      id: event.organizer.id,
+      userId: event.organizer.userId,
+      packageId: event.organizer.packageId,
+      username: event.organizer.user.name,
+      package: event.organizer.package.name,
+    },
+  }));
+
+  events = events.map((event) => {
+    const { organizerId, ...data } = event;
+    return data;
+  });
+
   return events;
 };
 
 const getEventById = async (id) => {
-  const event = await eventRepository.findById(Event, id);
+  const event = await eventRepository.findByIdWithUserAndPackage(id);
   if (!event) {
     throw new ApiError(httpStatus.NOT_FOUND, messages.RECORD_NOT_FOUND);
   }
-  return event;
+
+  const { id: organizerId, userId, packageId, ...organizer } = event.organizer;
+
+  const eventData = {
+    ...event.toJSON(),
+    organizer: {
+      id: organizerId,
+      userId,
+      packageId,
+      username: organizer.user.name,
+      package: organizer.package.name,
+    },
+  };
+
+  eventData.organizerId = undefined;
+
+  return eventData;
 };
 
 const removeEvent = async (id) => {
