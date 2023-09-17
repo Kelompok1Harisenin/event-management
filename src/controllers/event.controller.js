@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
-const { Event, Organizer, Package, User } = require('../models');
-// const {} = require('../services/event.service');
+const { Event, Organizer, Package } = require('../models');
 const { catchAsync } = require('../utils');
+const { eventService } = require('../services');
 
 const getevent = catchAsync(async (req, res) => {
   try {
@@ -36,56 +36,9 @@ const geteventByTitle = catchAsync(async (req, res) => {
   }
 });
 
-const creatEvent = catchAsync(async (req, res) => {
-  const idUser = req.user.sub;
-  // console.log(idUser);
-  const {
-    // organizerId,
-    participantId,
-    title,
-    description,
-    eventType,
-    eventMode,
-    ettendeQuota,
-    availableQuota,
-    dateStart,
-    dateEnd,
-    location,
-    cost,
-  } = req.body;
-  const user = await User.findOne({
-    where: { id: idUser },
-  });
-  // console.log(user.name);
-  const packageOrganize = await Package.create({
-    name: user.name,
-    maxEvents: 200,
-    maxQuota: ettendeQuota,
-  });
-  const organizer = await Organizer.create({
-    userId: idUser,
-    packageId: packageOrganize.id,
-  });
-  const data = await Event.create({
-    organizerId: organizer.id,
-    participantId,
-    title,
-    description,
-    eventType,
-    eventMode,
-    ettendeQuota,
-    availableQuota,
-    // img,
-    dateStart,
-    dateEnd,
-    location,
-    cost,
-  });
-  return res.status(httpStatus.OK).send({
-    masssage: 'Event Was Created',
-    data,
-    organizer,
-  });
+const createEvent = catchAsync(async (req, res) => {
+  const event = await eventService.createEvent(req.body, req.file);
+  res.status(httpStatus.CREATED).send({ event });
 });
 
 const removeEvent = catchAsync(async (req, res) => {
@@ -132,4 +85,4 @@ const removeEvent = catchAsync(async (req, res) => {
   }
 });
 
-module.exports = { getevent, geteventByTitle, removeEvent, creatEvent };
+module.exports = { getevent, geteventByTitle, removeEvent, createEvent };

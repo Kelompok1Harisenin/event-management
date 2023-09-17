@@ -1,7 +1,7 @@
 const express = require('express');
 const authRoute = require('./auth.route');
-const eventRoute = require('./event.router');
-const organizerRoute = require('./organizer.router');
+const eventRoute = require('./event.route');
+const organizerRoute = require('./organizer.route');
 
 const router = express.Router();
 
