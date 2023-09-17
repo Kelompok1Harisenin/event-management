@@ -1,29 +1,40 @@
 const httpStatus = require('http-status');
 const { Organizer } = require('../models');
-const { packageRepository, userRepository } = require('../repositories');
-const { ApiError } = require('../utils');
+const { organizerRepository, packageRepository, userRepository } = require('../repositories');
+const { ApiError, messages } = require('../utils');
 
 const createOrganizer = async (data) => {
   const { userId, packageId } = data;
 
-  try {
-    const packageData = await packageRepository.findById(Organizer, packageId);
-    const user = await userRepository.findById(userId);
-    if (packageData && user) {
-      await Organizer.create({
-        userId: user.id,
-        packageId: packageData.id,
-      });
-    }
-  } catch (error) {
-    throw new ApiError(httpStatus.CONFLICT, error.message);
+  const organizer = await organizerRepository.findByUser(userId);
+  if (organizer) {
+    throw new ApiError(httpStatus.BAD_REQUEST, messages.RECORD_TAKEN);
   }
+
+  const user = await userRepository.findById(userId);
+  const packageData = await packageRepository.findById(packageId);
+  if (!(user && packageData)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, messages.PACKAGE_USER_NOT_FOUND);
+  }
+
+  const organizerData = await Organizer.create({
+    userId: user.id,
+    packageId: packageData.id,
+  });
+
+  return organizerData;
 };
 
 const getOrganizers = async () => {
-  const organizer = await Organizer.findAll();
+  let organizers = await organizerRepository.findAllWithUserAndPackage();
 
-  return organizer;
+  organizers = organizers.map((organizer) => ({
+    ...organizer.toJSON(),
+    user: organizer.user.name,
+    package: organizer.package.name,
+  }));
+
+  return organizers;
 };
 
 module.exports = {

@@ -12,5 +12,6 @@ router.post(
   validate(organizerValidation.createOrganizer),
   organizerController.createOrganizer
 );
+router.get('/', organizerController.getOrganizers);
 
 module.exports = router;
