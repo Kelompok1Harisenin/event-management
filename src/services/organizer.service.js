@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const { Organizer } = require('../models');
-const { packageRepository, userRepository } = require('../repositories');
+const { organizerRepository, packageRepository, userRepository } = require('../repositories');
 const { ApiError } = require('../utils');
 
 const createOrganizer = async (data) => {
@@ -21,9 +21,15 @@ const createOrganizer = async (data) => {
 };
 
 const getOrganizers = async () => {
-  const organizer = await Organizer.findAll();
+  let organizers = await organizerRepository.findAllWithUserAndPackage();
 
-  return organizer;
+  organizers = organizers.map((organizer) => ({
+    ...organizer.toJSON(),
+    user: organizer.user.name,
+    package: organizer.package.name,
+  }));
+
+  return organizers;
 };
 
 module.exports = {

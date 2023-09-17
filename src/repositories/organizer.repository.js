@@ -1,11 +1,24 @@
-const { Organizer } = require('../models');
+const { Organizer, User, Package } = require('../models');
 const baseRepository = require('./base.repository');
 
-const findById = (organizerId) => {
-  return Organizer.findByPk(organizerId);
+const findAllWithUserAndPackage = () => {
+  const queryOptions = {
+    include: [
+      {
+        model: User,
+        attributes: ['name'],
+      },
+      {
+        model: Package,
+        attributes: ['name'],
+      },
+    ],
+  };
+
+  return Organizer.findAll(queryOptions);
 };
 
 module.exports = {
-  findById,
   ...baseRepository,
+  findAllWithUserAndPackage,
 };
