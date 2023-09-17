@@ -5,13 +5,13 @@ const ApiError = require('./ApiError');
 
 const bucketName = config.supabase.bucket;
 
-const uploadImage = async (uploadedImage, title) => {
+const uploadImage = async (uploadedImage, title, tag) => {
   try {
     const { buffer } = uploadedImage;
     const uniqueId = new Date().getTime();
 
     const titleStr = title.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '');
-    const filePath = `events/${titleStr}-${uniqueId}`;
+    const filePath = `${tag}/${titleStr}-${uniqueId}`;
     const { error } = await supabase.storage.from(bucketName).upload(filePath, buffer);
 
     if (error) {
