@@ -13,6 +13,8 @@ const messages = {
   IMAGE_NOT_FOUND: 'Image not found',
   RECORD_NOT_FOUND: 'Record not found!',
   RECORD_TAKEN: 'Record is taken!',
+  MAX_QUOTA_EXCEDEED: 'The quota amount exceeds the max quota limit of your package.',
+  MAX_EVENT_EXCEDEED: 'Max event limit exceeded. Please upgrade your package',
 };
 
 module.exports = messages;

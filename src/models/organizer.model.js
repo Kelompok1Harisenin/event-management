@@ -20,7 +20,7 @@ const Organizer = sequelize.define('organizer', {
   },
 });
 
+Package.hasMany(Organizer, { foreignKey: 'packageId' });
 Organizer.belongsTo(User, { foreignKey: 'userId' });
-Organizer.belongsTo(Package, { foreignKey: 'packageId' });
 
 module.exports = Organizer;

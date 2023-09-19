@@ -54,8 +54,20 @@ const findByIdWithUserAndPackage = (eventId) => {
   });
 };
 
+const countByUserAndOrganizer = (userId) => {
+  return Event.count({
+    include: [
+      {
+        model: Organizer,
+        where: { userId },
+      },
+    ],
+  });
+};
+
 module.exports = {
   ...baseRepository,
   findAllByFilterWithUserAndPackage,
   findByIdWithUserAndPackage,
+  countByUserAndOrganizer,
 };

@@ -1,9 +1,9 @@
 const httpStatus = require('http-status');
 const { Event, Organizer } = require('../models');
-const { organizerRepository, eventRepository } = require('../repositories');
+const { organizerRepository, eventRepository, packageRepository } = require('../repositories');
 const { ApiError, messages, tags, uploadImage } = require('../utils');
 
-const createEvent = async (data, imageFile) => {
+const createEvent = async (data, imageFile, user) => {
   const {
     organizerId,
     title,
@@ -21,12 +21,25 @@ const createEvent = async (data, imageFile) => {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.IMAGE_NOT_FOUND);
   }
 
-  const image = await uploadImage(imageFile, title, tags.EVENTS);
   const organizer = await organizerRepository.findById(Organizer, organizerId);
   if (!organizer) {
     throw new ApiError(httpStatus.NOT_FOUND, messages.ORGANIZER_NOT_FOUND);
   }
 
+  const packageData = await packageRepository.findByUserAndOrganizer(user.sub);
+  const packageValues = packageData?.dataValues;
+  const { maxEvents, maxQuota } = packageValues;
+
+  if (attendeeQuota > maxQuota) {
+    throw new ApiError(httpStatus.BAD_REQUEST, messages.MAX_QUOTA_EXCEDEED);
+  }
+
+  const countEvents = await eventRepository.countByUserAndOrganizer(user.sub);
+  if (countEvents !== 0 && countEvents + 1 > maxEvents) {
+    throw new ApiError(httpStatus.BAD_REQUEST, messages.MAX_EVENT_EXCEDEED);
+  }
+
+  const image = await uploadImage(imageFile, title, tags.EVENTS);
   const createdEvent = await Event.create({
     organizerId,
     title,
