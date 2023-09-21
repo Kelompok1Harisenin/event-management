@@ -5,7 +5,6 @@ const { ApiError, messages, tags, uploadImage } = require('../utils');
 
 const createEvent = async (data, imageFile, user) => {
   const {
-    organizerId,
     title,
     description,
     eventType,
@@ -21,7 +20,7 @@ const createEvent = async (data, imageFile, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.IMAGE_NOT_FOUND);
   }
 
-  const organizer = await organizerRepository.findById(Organizer, organizerId);
+  const organizer = await organizerRepository.findByUser(user.sub);
   if (!organizer) {
     throw new ApiError(httpStatus.NOT_FOUND, messages.ORGANIZER_NOT_FOUND);
   }
@@ -41,7 +40,7 @@ const createEvent = async (data, imageFile, user) => {
 
   const image = await uploadImage(imageFile, title, tags.EVENTS);
   const createdEvent = await Event.create({
-    organizerId,
+    organizerId: organizer.id,
     title,
     description,
     eventType,
