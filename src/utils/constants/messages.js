@@ -8,7 +8,8 @@ const messages = {
   FORBIDDEN_ACCESS: 'Forbidden',
   PASSWORD_CHARACTERS_LENGTH: 'Password must be at least 8 characters',
   PASSWORD_REGEX_MATCH: 'Password must contain at least 1 letter and 1 number',
-  ORGANIZER_NOT_FOUND: 'Organizer not found!',
+  ORGANIZER_NOT_FOUND:
+    'You are not an organizer. Please contact admin or buy the organizer package.',
   PACKAGE_USER_NOT_FOUND: 'Either package or user not found.',
   IMAGE_NOT_FOUND: 'Image not found',
   RECORD_NOT_FOUND: 'Record not found!',

@@ -4,7 +4,6 @@ const enumEventTypes = ['Online', 'Offline'];
 
 const createEvent = {
   formData: Joi.object().keys({
-    organizerId: Joi.number().integer().required(),
     title: Joi.string().required(),
     description: Joi.string().allow(''),
     eventType: Joi.string()
