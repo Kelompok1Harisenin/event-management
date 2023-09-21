@@ -29,7 +29,7 @@ const auth =
       req.user = decoded;
 
       if (requiredRights.length) {
-        const userRights = roleRights.get(decoded.role);
+        const userRights = requiredRights.get(decoded.role);
         const hasRequiredRights = requiredRights.every((requiredRight) =>
           userRights.includes(requiredRight)
         );
