@@ -27,7 +27,17 @@ const sendEmail = async (to, subject, text) => {
   await transport.sendMail(msg);
 };
 
+const sendAttachmentEmail = async (to, subject, text, attachments) => {
+  const msg = { from: config.email.from, to, subject, text, attachments };
+  try {
+    await transport.sendMail(msg);
+  } catch (err) {
+    logger.error(`Error sending email with attachment to ${to}!`);
+  }
+};
+
 module.exports = {
   transport,
   sendEmail,
+  sendAttachmentEmail,
 };
