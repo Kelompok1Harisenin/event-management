@@ -4,4 +4,3 @@ module.exports.userService = require('./user.service');
 module.exports.organizerService = require('./organizer.service');
 module.exports.eventService = require('./event.service');
 module.exports.ticketService = require('./ticket.service');
-module.exports.emailService = require('./email.service');
