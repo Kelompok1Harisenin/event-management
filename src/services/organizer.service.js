@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { Organizer, Package } = require('../models');
+const { Organizer, Package, User } = require('../models');
 const { organizerRepository, packageRepository, userRepository } = require('../repositories');
 const { ApiError, messages } = require('../utils');
 
@@ -11,7 +11,7 @@ const createOrganizer = async (data) => {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.RECORD_TAKEN);
   }
 
-  const user = await userRepository.findById(userId);
+  const user = await userRepository.findById(User, userId);
   const packageData = await packageRepository.findById(Package, packageId);
   if (!(user && packageData)) {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.PACKAGE_USER_NOT_FOUND);

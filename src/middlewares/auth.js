@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 const httpStatus = require('http-status');
 const config = require('../config/config');
-const { messages, roles, ApiError } = require('../utils');
+const { messages, ApiError } = require('../utils');
+const { userRepository } = require('../repositories');
+const { User } = require('../models');
 
 const verifyJwt = (token) => {
   return new Promise((resolve, reject) => {
@@ -26,7 +28,9 @@ const auth =
 
       const decoded = await verifyJwt(token);
 
-      req.user = decoded;
+      const user = await userRepository.findById(User, decoded.sub);
+
+      req.user = user.dataValues;
 
       if (requiredRights.length) {
         const userRights = requiredRights.get(decoded.role);
