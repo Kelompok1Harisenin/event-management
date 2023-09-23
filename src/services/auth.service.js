@@ -63,10 +63,9 @@ const login = async (data) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, messages.INCORRECT_CREDENTIALS);
   }
 
-  const result = { ...user.dataValues };
-  delete result.password;
+  const [userData] = await userRepository.findOneWithRoleAndPermissions(user.dataValues.id);
 
-  return result;
+  return userData || {};
 };
 
 /**
