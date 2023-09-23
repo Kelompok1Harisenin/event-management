@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Event = require('./event.model');
-const Attendee = require('./attendee.model');
+const User = require('./user.model');
 
 // Define the Ticket model
 const Ticket = sequelize.define(
@@ -9,21 +9,24 @@ const Ticket = sequelize.define(
   {
     eventId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: Event,
+        key: 'id',
+      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
         key: 'id',
       },
     },
     number: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    attendeeId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Attendee,
-        key: 'id',
-      },
+      unique: true,
     },
     emailSent: {
       type: DataTypes.BOOLEAN,
@@ -35,6 +38,7 @@ const Ticket = sequelize.define(
   }
 );
 
-Ticket.belongsTo(Attendee, { foreignKey: 'attendeeId' });
+Ticket.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Ticket, { foreignKey: 'userId' });
 
 module.exports = Ticket;
