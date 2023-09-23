@@ -18,6 +18,9 @@ const Organizer = sequelize.define('organizer', {
       key: 'id',
     },
   },
+  description: {
+    type: DataTypes.TEXT,
+  },
 });
 
 Package.hasMany(Organizer, { foreignKey: 'packageId' });

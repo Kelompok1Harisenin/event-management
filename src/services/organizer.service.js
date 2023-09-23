@@ -4,7 +4,7 @@ const { organizerRepository, packageRepository, userRepository } = require('../r
 const { ApiError, messages } = require('../utils');
 
 const createOrganizer = async (data) => {
-  const { userId, packageId } = data;
+  const { userId, packageId, description } = data;
 
   const organizer = await organizerRepository.findByUser(userId);
   if (organizer) {
@@ -20,6 +20,7 @@ const createOrganizer = async (data) => {
   const organizerData = await Organizer.create({
     userId: user.id,
     packageId: packageData.id,
+    description,
   });
 
   return organizerData;
