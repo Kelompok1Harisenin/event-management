@@ -6,3 +6,4 @@ module.exports.ApiError = require('./ApiError');
 module.exports.catchAsync = require('./catchAsync');
 module.exports.pick = require('./pick');
 module.exports.uploadImage = require('./uploadImage');
+module.exports.convertDateTime = require('./convertDateTime');
