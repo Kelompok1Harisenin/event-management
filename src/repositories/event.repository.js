@@ -20,6 +20,7 @@ const findAllByFilterWithUserAndPackage = (filter = null) => {
         ],
       },
     ],
+    order: [['createdAt', 'DESC']],
   };
 
   if (title) {
