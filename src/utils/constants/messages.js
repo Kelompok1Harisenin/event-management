@@ -12,6 +12,7 @@ const messages = {
     'You are not an organizer. Please contact admin or buy the organizer package.',
   PACKAGE_USER_NOT_FOUND: 'Either package or user not found.',
   IMAGE_NOT_FOUND: 'Image not found',
+  EVENT_NOT_FOUND: 'Event not found!',
   RECORD_NOT_FOUND: 'Record not found!',
   RECORD_TAKEN: 'Record is taken!',
   MAX_QUOTA_EXCEDEED: 'The quota amount exceeds the max quota limit of your package.',
