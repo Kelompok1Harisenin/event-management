@@ -19,7 +19,7 @@ const reserveTicket = async (data, user) => {
     eventId,
     userId: user.id,
     number,
-    emailSent: false,
+    emailSent: true,
   });
 
   return ticketData;
