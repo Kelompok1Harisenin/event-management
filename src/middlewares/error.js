@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const config = require('../config/config');
-const sequelize = require('../config/database');
+const logger = require('../config/logger')('error.js');
 const ApiError = require('../utils/ApiError');
 
 const errorConverter = (err, req, res, next) => {
@@ -13,7 +13,7 @@ const errorConverter = (err, req, res, next) => {
   next(error);
 };
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   let { statusCode, message } = err;
   if (config.env === 'production' && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
@@ -29,7 +29,7 @@ const errorHandler = (err, req, res, next) => {
   };
 
   if (config.env === 'development') {
-    console.log(err);
+    logger.error(err);
   }
 
   res.status(statusCode).send(response);
