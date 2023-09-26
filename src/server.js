@@ -6,7 +6,7 @@ const logger = require('./config/logger')('index.js');
 let server;
 
 sequelize
-  .authenticate()
+  .sync()
   .then(() => {
     logger.info(`Connected to postgre db ${config.postgres.url}`);
     server = app.listen(config.port, () => {

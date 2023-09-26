@@ -9,4 +9,4 @@ module.exports.Package = require('./package.model');
 module.exports.Organizer = require('./organizer.model');
 module.exports.Ticket = require('./ticket.model');
 module.exports.PaymentMethod = require('./paymentMethod.model');
-// module.exports.Payment = require('./payment.model');
+module.exports.Payment = require('./payment.model');

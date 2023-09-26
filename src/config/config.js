@@ -31,6 +31,10 @@ const envVarsSchema = Joi.object()
     SUPABASE_URL: Joi.string().required(),
     SUPABASE_API_KEY: Joi.string().required(),
     SUPABASE_BUCKET: Joi.string().required(),
+    MIDTRANS_API_URL: Joi.string().required(),
+    MIDTRANS_MERCHANT_ID: Joi.string().required(),
+    MIDTRANS_CLIENT_KEY: Joi.string().required(),
+    MIDTRANS_SERVER_KEY: Joi.string().required(),
   })
   .unknown();
 
@@ -71,5 +75,11 @@ module.exports = {
     url: envVars.SUPABASE_URL,
     apiKey: envVars.SUPABASE_API_KEY,
     bucket: envVars.SUPABASE_BUCKET,
+  },
+  midtrans: {
+    url: envVars.MIDTRANS_API_URL,
+    merchantId: envVars.MIDTRANS_MERCHANT_ID,
+    clientKey: envVars.MIDTRANS_CLIENT_KEY,
+    serverKey: envVars.MIDTRANS_SERVER_KEY,
   },
 };
